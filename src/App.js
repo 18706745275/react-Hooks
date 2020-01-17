@@ -1,5 +1,6 @@
 import React,{ useEffect,useReducer } from 'react';
 import Header from './components/Header'
+// import Example from './components/Example'
 import Movie from './components/Movie'
 import Search from './components/Search'
 import './App.css';
@@ -39,6 +40,7 @@ const reducer = (state, action)=>{
 const App = ()=> {
   const [state, dispatch] = useReducer(reducer, initialState);
   useEffect(() => {
+    console.log('11')
     fetch(MOVIE_API_URL)
         .then(response => response.json())
         .then(jsonResponse => {
@@ -46,9 +48,9 @@ const App = ()=> {
         dispatch({
             type: "SEARCH_MOVIES_SUCCESS",
             payload: jsonResponse.Search
-      });
+        });
     });
-}, []);
+  },[]);
   // 搜索
   const search = searchValue => {
     dispatch({
@@ -73,9 +75,10 @@ const App = ()=> {
   const { movies, errorMessage, loading } = state;
   return (
     <div className="App">
-      <Header text="ReactHooKs"/>
+      <Header text="ReactHooKs例子"/>
+      {/* <Example initState={0}/> */}
       <Search search={search} />
-      <p className="App-intro">Sharing a few of our favourite movies</p>
+      <p className="App-intro">查询最新电影</p>
       <div className="movies">
         {loading && !errorMessage ? (
          <span>loading...</span>
