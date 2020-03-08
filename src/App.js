@@ -1,15 +1,26 @@
-import React,{ useEffect,useReducer } from 'react';
+import React,{ useEffect,useState } from 'react';
 import Header from './components/Header'
 import Movie from './components/Movie'
 import Search from './components/Search'
 import './App.css';
 
+// 自定义hooks
+function useReducerTest(reducer,initialState){
+  const [state,setState] = useState(initialState);
+
+  function dispatch(action){
+    const newState = reducer(state,action);
+    setState(newState);
+  }
+
+  return [state,dispatch];
+}
 const MOVIE_API_URL = "https://www.omdbapi.com/?s=man&apikey=4a3b711b";
 
 const initialState = {
   loading: true,
   movies: [],
-  errorMessage: null
+  errorMessage: null,
 }
 // 引入reducer
 const reducer = (state, action)=>{
@@ -37,18 +48,17 @@ const reducer = (state, action)=>{
   }
 }
 const App = ()=> {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, dispatch] = useReducerTest(reducer, initialState);
   useEffect(() => {
     fetch(MOVIE_API_URL)
         .then(response => response.json())
         .then(jsonResponse => {
-    
         dispatch({
             type: "SEARCH_MOVIES_SUCCESS",
             payload: jsonResponse.Search
-      });
+        });
     });
-}, []);
+  },[]);
   // 搜索
   const search = searchValue => {
     dispatch({

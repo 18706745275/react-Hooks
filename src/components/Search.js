@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState,useRef } from "react";
 
 
 const Search = (props) => {
   const [searchValue, setSearchValue] = useState("");
+  const inputEl = useRef(null);
   // 搜索框改变
   const handleSearchInputChanges = (e) => {
     setSearchValue(e.target.value);
@@ -13,6 +14,8 @@ const Search = (props) => {
   }
   // 点击提交
   const callSearchFunction = (e) => {
+    console.log(inputEl)
+    inputEl.current.focus();
     e.preventDefault();
     props.search(searchValue);
     resetInputField();
@@ -21,6 +24,7 @@ const Search = (props) => {
   return (
       <form className="search">
         <input
+          ref={inputEl}
           value={searchValue}
           onChange={handleSearchInputChanges}
           type="text"
